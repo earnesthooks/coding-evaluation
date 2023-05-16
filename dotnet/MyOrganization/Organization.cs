@@ -27,6 +27,38 @@ namespace MyOrganization
         public Position? Hire(Name person, string title)
         {
             //your code here
+            // Find Position
+            Position position = FindThePosition(root, title);
+
+            if (position != null)
+            {
+                //Set Identifier
+                var identifier = position.GetHashCode();
+                //Instantiate New Employee
+                position.SetEmployee(new Employee(identifier, person));
+                return position;
+            }
+
+            return null;
+        }
+
+        //Need to Add a Method to find position hashcode/identifier
+        private Position FindThePosition(Position position, string title)
+        {
+            if (position.GetTitle() == title)
+            {
+                return position;
+            }
+
+            foreach (Position directReport in position.GetDirectReports())
+            {
+                Position foundPosition = FindThePosition(directReport, title);
+                if (foundPosition != null)
+                {
+                    return foundPosition;
+                }
+            }
+
             return null;
         }
 
